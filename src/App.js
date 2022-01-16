@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { connect } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import HomePage from "./pages/homepage/homepage.page";
 import ShopPage from "./pages/shop/shop.page";
 import SignInUp from "./pages/sign-in-up/sign-in-up.page";
@@ -33,6 +33,7 @@ class App extends React.Component {
           //     ...snapShot.data(),
           //   },
           // });
+
           setCurrentUser({
             id: snapShot.id,
             ...snapShot.data(),
@@ -41,7 +42,7 @@ class App extends React.Component {
         });
       }
       // this.setState({ currentUser: userAuth });
-      setCurrentUser({ userAuth });
+      setCurrentUser(userAuth);
     });
   }
 
@@ -57,16 +58,27 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route path="/sign-in-up" component={SignInUp} />
+          <Route
+            exact
+            path="/sign-in-up"
+            render={() =>
+              this.props.currentUser ? <Redirect to="/" /> : <SignInUp />
+            }
+          />
         </Switch>
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser,
+});
+
 //dispatch is a function used in redux automatically patching payloads
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+// export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
