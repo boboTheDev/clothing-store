@@ -1,10 +1,12 @@
 import React from "react";
 import "./header.styles.scss";
+import CartIcon from "../cart-icon/cart-icon.component";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "./../../assets/crown.svg";
 import { auth } from "./../../firebase/firebase.utils";
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hidden }) => (
   <div className="header">
     <Link className="logo-container" to="/">
       <Logo className="logo" />
@@ -26,13 +28,21 @@ const Header = ({ currentUser }) => (
           SING IN UP
         </Link>
       )}
+      <CartIcon />
     </div>
+    {hidden ? null : <CartDropdown />}
   </div>
 );
 
-//Function name can be anything
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
+//NOTE: Function name can be anything, it is used to control Props and components based on state
+// const mapStateToProps = (state) => ({
+//   currentUser: state.user.currentUser,
+// });
+
+//currenUser is inside state.user.. advance way of destructuring
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+  currentUser,
+  hidden,
 });
 
 export default connect(mapStateToProps)(Header);
