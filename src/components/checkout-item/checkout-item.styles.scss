@@ -21,6 +21,8 @@
   .quantity,
   .price {
     width: 23%;
+    display: flex;
+    align-items: center;
   }
 
   .quantity {
