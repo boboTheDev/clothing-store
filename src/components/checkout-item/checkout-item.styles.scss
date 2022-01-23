@@ -22,4 +22,22 @@
   .price {
     width: 23%;
   }
+
+  .quantity {
+    display: flex;
+    text-align: center;
+    align-items: center;
+
+    .arrow {
+      cursor: pointer;
+    }
+    .value {
+      margin: 0 10px;
+    }
+  }
+  .remove-button {
+    font-weight: bold;
+    padding-left: 12px;
+    cursor: pointer;
+  }
 }
