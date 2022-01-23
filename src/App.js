@@ -6,8 +6,11 @@ import HomePage from "./pages/homepage/homepage.page";
 import ShopPage from "./pages/shop/shop.page";
 import SignInUp from "./pages/sign-in-up/sign-in-up.page";
 import Header from "./components/header/header.component";
+import CheckoutPage from "./pages/checkout/checkout.page";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
+import { selectCurrentUser } from "./redux/user/user.selectors";
+import { createStructuredSelector } from "reselect";
 class App extends React.Component {
   // constructor() {
   //   super();
@@ -65,14 +68,15 @@ class App extends React.Component {
               this.props.currentUser ? <Redirect to="/" /> : <SignInUp />
             }
           />
+          <Route exact path="/checkout" component={CheckoutPage} />
         </Switch>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
 });
 
 //dispatch is a function used in redux automatically patching payloads
